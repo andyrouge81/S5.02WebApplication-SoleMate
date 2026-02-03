@@ -3,7 +3,6 @@ package cat.itacademy.webappsolemate.controllers;
 import cat.itacademy.webappsolemate.application.dto.request.ReviewRequest;
 import cat.itacademy.webappsolemate.application.dto.response.ReviewResponse;
 import cat.itacademy.webappsolemate.application.services.review.ReviewService;
-import cat.itacademy.webappsolemate.infraestructure.persistence.ReviewRepository;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

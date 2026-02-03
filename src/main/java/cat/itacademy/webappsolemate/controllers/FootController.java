@@ -46,7 +46,7 @@ public class FootController {
         return footService.updateFoot(footId, request);
     }
 
-    @DeleteMapping("/footId")
+    @DeleteMapping("/{footId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteFoot(@PathVariable Long footId) {
 
