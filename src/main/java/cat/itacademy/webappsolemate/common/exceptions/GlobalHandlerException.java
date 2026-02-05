@@ -3,44 +3,24 @@ package cat.itacademy.webappsolemate.common.exceptions;
 import cat.itacademy.webappsolemate.application.dto.response.ApiError;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.nio.file.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 import java.time.Instant;
 
 @RestControllerAdvice
 public class GlobalHandlerException {
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ApiError> handlerUserNotFound(UserNotFoundException ex){
+    @ExceptionHandler({
+            UserNotFoundException.class,
+            FootNotFoundException.class,
+            ReviewNotFoundException.class})
+    public ResponseEntity<ApiError> handlerNotFound(RuntimeException ex){
 
         ApiError error = new ApiError(
 
-                HttpStatus.NOT_FOUND.getReasonPhrase(),
-                ex.getMessage(),
-                Instant.now()
-        );
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
-    }
-
-    @ExceptionHandler(FootNotFoundException.class)
-    public ResponseEntity<ApiError> handlerFootNotFound(FootNotFoundException ex) {
-
-        ApiError error = new ApiError(
-                HttpStatus.NOT_FOUND.getReasonPhrase(),
-                ex.getMessage(),
-                Instant.now()
-        );
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
-    }
-
-    @ExceptionHandler(ReviewNotFoundException.class)
-    public ResponseEntity<ApiError> handlerReviewNotFound(ReviewNotFoundException ex) {
-
-        ApiError error = new ApiError(
                 HttpStatus.NOT_FOUND.getReasonPhrase(),
                 ex.getMessage(),
                 Instant.now()
@@ -78,11 +58,30 @@ public class GlobalHandlerException {
 
         ApiError error = new ApiError(
                 HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
-                ex.getMessage(),
+                "Unexpected error",
                 Instant.now()
         );
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ApiError> handlerValidation(MethodArgumentNotValidException ex) {
+
+        String message = ex.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(err -> err.getField() + ": "+ err.getDefaultMessage())
+                .findFirst()
+                .orElse("Validation error");
+
+        ApiError error = new ApiError(
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                message,
+                Instant.now()
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
 }
