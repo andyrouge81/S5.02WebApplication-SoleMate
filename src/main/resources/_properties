@@ -1,0 +1,3 @@
+spring.application.name=S5.t02SoleMate
+pp.jwt.secret=w/UsYSHmyMyg+cm6Fjedqxq02Oo7M/GkfFLXYDJYMHU=
+app.jwt.expiration-ms=86400000
