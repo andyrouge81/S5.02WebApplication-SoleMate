@@ -8,11 +8,16 @@ import cat.itacademy.webappsolemate.common.exceptions.UserNotFoundException;
 import cat.itacademy.webappsolemate.domain.entities.User;
 import cat.itacademy.webappsolemate.domain.enums.Role;
 import cat.itacademy.webappsolemate.infraestructure.persistence.UserRepository;
+import cat.itacademy.webappsolemate.infraestructure.security.JwtService;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.ldap.LdapUserServiceBeanDefinitionParser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,13 +30,19 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
+    private final UserDetailsService userDetailsService;
 
     public AuthServiceImpl(UserRepository userRepository,
                            PasswordEncoder passwordEncoder,
-                           AuthenticationManager authenticationManager) {
+                           AuthenticationManager authenticationManager,
+                           JwtService jwtService,
+                           UserDetailsService userDetailsService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
+        this.userDetailsService = userDetailsService;
     }
 
     @Override
@@ -64,7 +75,11 @@ public class AuthServiceImpl implements AuthService {
                         request.password()
                 )
         );
-        return new AuthResponse(null);
+
+        UserDetails userDetails = userDetailsService.loadUserByUsername(request.username());
+        String token = jwtService.generateToken(userDetails);
+
+        return new AuthResponse(token);
 
     }
 
@@ -75,7 +90,8 @@ public class AuthServiceImpl implements AuthService {
         Authentication authentication =
                 SecurityContextHolder.getContext().getAuthentication();
 
-        if(authentication == null || !authentication.isAuthenticated()) {
+        if(authentication == null || !authentication.isAuthenticated()
+        || authentication instanceof AnonymousAuthenticationToken) {
             throw new AccessDeniedException("User not authorized");
         }
 
@@ -90,6 +106,5 @@ public class AuthServiceImpl implements AuthService {
                 user.getRole()
         );
     }
-
 
 }

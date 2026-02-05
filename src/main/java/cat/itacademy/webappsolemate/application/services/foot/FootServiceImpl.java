@@ -84,39 +84,22 @@ public class FootServiceImpl implements FootService {
     @Override
     public FootResponse updateFoot(Long footId, FootRequest request) {
 
-        CurrentUserResponse currentUser = authService.getCurrentUser();
-
         Foot foot = footRepository.findById(footId)
                 .orElseThrow(()-> new FootNotFoundException(footId));
-
-        boolean isOwner = foot.getOwner().getId().equals(currentUser.id());
-
-        if(!isOwner) {
-            throw new AccessDeniedException("Do are not allowed to update the foot");
-        }
 
         foot.setNickname(request.nickname());
         foot.setImageUrl(request.imageUrl());
         foot.setArchType(request.archType());
 
-        return FootMapper.toResponse(foot);
+        return FootMapper.toResponse(footRepository.save(foot));
 
     }
 
     @Override
     public void deleteFoot(Long footId) {
 
-        CurrentUserResponse currentUser = authService.getCurrentUser();
-
         Foot foot = footRepository.findById(footId)
                 .orElseThrow(() -> new FootNotFoundException(footId));
-
-        boolean isOwner = foot.getOwner().getId().equals(currentUser.id());
-        boolean isAdmin = currentUser.role() == Role.ROLE_ADMIN;
-
-        if(!isOwner && !isAdmin) {
-            throw new AccessDeniedException("No authorized to delete this foot");
-        }
 
         footRepository.delete(foot);
     }
