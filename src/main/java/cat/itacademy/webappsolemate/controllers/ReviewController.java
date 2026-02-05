@@ -6,6 +6,7 @@ import cat.itacademy.webappsolemate.application.services.review.ReviewService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class ReviewController {
         this.reviewService = reviewService;
     }
 
+    @PreAuthorize("hasAnyRole('USER')")
     @PostMapping("/{footId}/reviews")
     @ResponseStatus(HttpStatus.CREATED)
     public ReviewResponse createReview(
@@ -36,6 +38,7 @@ public class ReviewController {
     }
 
     @DeleteMapping("/reviews/{reviewId}")
+    @PreAuthorize("hasRole('ADMIN') or @reviewSecurity.isOwner(#reviewId)")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteReview(@PathVariable Long reviewId) {
 

@@ -9,7 +9,11 @@ import cat.itacademy.webappsolemate.application.services.auth.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -36,7 +40,40 @@ public class AuthController {
     }
 
     @GetMapping("/me")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<CurrentUserResponse> getCurrentUser() {
         return ResponseEntity.ok(authService.getCurrentUser());
     }
+
+    @GetMapping("/debug")
+    public Object debugAuth() {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        return Map.of(
+                "authNull", auth == null,
+                "authenticated", auth != null && auth.isAuthenticated(),
+                "principalClass", auth != null ? auth.getPrincipal().getClass().getName() : null,
+                "principal", auth != null ? auth.getPrincipal().toString() : null,
+                "authorities", auth != null ? auth.getAuthorities().toString() : null
+        );
+    }
+
+    @GetMapping("/admin/health")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String adminOnly() {
+        return "Solo ADMIN";
+    }
+
+    @GetMapping("/user/profile")
+    @PreAuthorize("hasRole('USER')")
+    public String userOnly() {
+        return "Solo USER";
+    }
+
+    @GetMapping("/user-or-admin")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    public String userOrAdmin() {
+        return "USER o ADMIN";
+    }
+
+
 }
