@@ -6,6 +6,7 @@ import cat.itacademy.webappsolemate.application.services.review.ReviewService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,11 +25,12 @@ public class ReviewController {
 
     @PreAuthorize("hasAnyRole('USER')")
     @PostMapping("/{footId}/reviews")
-    @ResponseStatus(HttpStatus.CREATED)
-    public ReviewResponse createReview(
+
+    public ResponseEntity<ReviewResponse> createReview(
             @PathVariable Long footId, @Valid @RequestBody ReviewRequest request) {
 
-        return reviewService.createReview(footId, request);
+        ReviewResponse response = reviewService.createReview(footId, request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/{footId}/reviews")

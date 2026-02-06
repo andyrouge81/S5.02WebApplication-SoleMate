@@ -10,13 +10,10 @@ import cat.itacademy.webappsolemate.common.exceptions.FootNotFoundException;
 import cat.itacademy.webappsolemate.common.exceptions.UserNotFoundException;
 import cat.itacademy.webappsolemate.domain.entities.Foot;
 import cat.itacademy.webappsolemate.domain.entities.User;
-import cat.itacademy.webappsolemate.domain.enums.Role;
 import cat.itacademy.webappsolemate.infraestructure.persistence.FootRepository;
 import cat.itacademy.webappsolemate.infraestructure.persistence.UserRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
