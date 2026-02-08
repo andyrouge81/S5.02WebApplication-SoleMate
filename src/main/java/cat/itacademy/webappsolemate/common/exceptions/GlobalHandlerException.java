@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import org.springframework.security.access.AccessDeniedException;
+
+import org.springframework.security.core.AuthenticationException;
 import java.time.Instant;
 
 @RestControllerAdvice
@@ -82,6 +84,17 @@ public class GlobalHandlerException {
         );
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ApiError> handlerAuth(AuthenticationException ex) {
+        ApiError error = new ApiError(
+                HttpStatus.UNAUTHORIZED.getReasonPhrase(),
+                "Invalid credentials",
+                Instant.now()
+        );
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
     }
 
 }
