@@ -10,4 +10,6 @@ import java.util.List;
 public interface FootRepository extends JpaRepository<Foot, Long> {
 
     List<Foot> findByOwnerId(Long ownerId);
+
+    void deleteByOwnerId(Long ownerId);
 }

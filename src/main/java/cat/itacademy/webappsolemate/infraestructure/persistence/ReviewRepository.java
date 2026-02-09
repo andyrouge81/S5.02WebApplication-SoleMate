@@ -9,9 +9,14 @@ import java.util.List;
 @Repository
 public interface ReviewRepository  extends JpaRepository<Review, Long> {
 
-    boolean existsByReviewer_IdAndFoot_Id(Long reviewId, Long footId);
+    boolean existsByReviewer_IdAndFoot_Id(Long reviewerId, Long footId);
 
     List<Review> findByFootId(Long footId);
 
     void deleteByFootId(Long footId);
+
+
+    void deleteByReviewerId(Long reviewerId);
+
+    void deleteByFoot_Owner_Id(Long ownerId);
 }
