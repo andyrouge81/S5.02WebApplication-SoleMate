@@ -9,7 +9,7 @@ public record FootRequest(
 
         @NotBlank
         @Size(max = 50)
-        String nickname,
+        String title,
 
         @NotBlank
         String imageUrl,

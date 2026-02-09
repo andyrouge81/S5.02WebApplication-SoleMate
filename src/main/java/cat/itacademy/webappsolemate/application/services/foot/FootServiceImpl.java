@@ -11,6 +11,7 @@ import cat.itacademy.webappsolemate.common.exceptions.UserNotFoundException;
 import cat.itacademy.webappsolemate.domain.entities.Foot;
 import cat.itacademy.webappsolemate.domain.entities.User;
 import cat.itacademy.webappsolemate.infraestructure.persistence.FootRepository;
+import cat.itacademy.webappsolemate.infraestructure.persistence.ReviewRepository;
 import cat.itacademy.webappsolemate.infraestructure.persistence.UserRepository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,13 +27,15 @@ public class FootServiceImpl implements FootService {
     private final FootRepository footRepository;
     private final UserRepository userRepository;
     private final AuthService authService;
+    private final ReviewRepository reviewRepository;
 
     public FootServiceImpl(FootRepository footRepository,
                            UserRepository userRepository,
-                           AuthService authService) {
+                           AuthService authService, ReviewRepository reviewRepository) {
         this.footRepository = footRepository;
         this.userRepository = userRepository;
         this.authService = authService;
+        this.reviewRepository = reviewRepository;
     }
 
     @Override
@@ -44,7 +47,7 @@ public class FootServiceImpl implements FootService {
                 .orElseThrow( () -> new UserNotFoundException(currentUser.id()));
 
          Foot foot = Foot.builder()
-                 .nickname(request.nickname())
+                 .title(request.title())
                  .imageUrl(request.imageUrl())
                  .archType(request.archType())
                  .owner(owner)
@@ -84,7 +87,7 @@ public class FootServiceImpl implements FootService {
         Foot foot = footRepository.findById(footId)
                 .orElseThrow(()-> new FootNotFoundException(footId));
 
-        foot.setNickname(request.nickname());
+        foot.setTitle(request.title());
         foot.setImageUrl(request.imageUrl());
         foot.setArchType(request.archType());
 
@@ -97,7 +100,7 @@ public class FootServiceImpl implements FootService {
 
         Foot foot = footRepository.findById(footId)
                 .orElseThrow(() -> new FootNotFoundException(footId));
-
+        reviewRepository.deleteByFootId(footId);
         footRepository.delete(foot);
     }
 

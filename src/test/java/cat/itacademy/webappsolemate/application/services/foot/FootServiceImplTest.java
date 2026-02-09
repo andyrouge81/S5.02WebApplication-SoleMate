@@ -53,7 +53,7 @@ class FootServiceImplTest {
     private Foot mockFoot(User owner) {
         return Foot.builder()
                 .id(10L)
-                .nickname("old-name")
+                .title("old-name")
                 .imageUrl("http://img.old")
                 .archType(ArchType.PES_PLANUS)
                 .owner(owner)
@@ -81,7 +81,7 @@ class FootServiceImplTest {
 
         FootResponse response = footService.createFoot(request);
 
-        assertEquals("new-foot", response.nickname());
+        assertEquals("new-foot", response.title());
         verify(footRepository).save(any(Foot.class));
     }
 
@@ -167,7 +167,7 @@ class FootServiceImplTest {
 
         FootResponse response = footService.updateFoot(10L, request);
 
-        assertEquals("update-foot", response.nickname());
+        assertEquals("update-foot", response.title());
         assertEquals("http://image.updated", response.imageUrl());
         assertEquals(ArchType.PES_PLANUS, request.archType());
 

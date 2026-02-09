@@ -14,7 +14,7 @@ public class FootMapper {
     public static FootResponse toResponse(Foot foot) {
         return new FootResponse(
                 foot.getId(),
-                foot.getNickname(),
+                foot.getTitle(),
                 foot.getImageUrl(),
                 foot.getArchType(),
                 foot.getOwner().getUsername(),

@@ -19,9 +19,10 @@ public class Foot {
     private Long id;
 
     @Column(nullable = false, length = 50)
-    private String nickname;
+    private String title;
 
-    @Column(nullable = false)
+
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String imageUrl;
 
     @Enumerated(EnumType.STRING)

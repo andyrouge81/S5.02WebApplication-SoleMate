@@ -12,4 +12,6 @@ public interface ReviewRepository  extends JpaRepository<Review, Long> {
     boolean existsByReviewer_IdAndFoot_Id(Long reviewId, Long footId);
 
     List<Review> findByFootId(Long footId);
+
+    void deleteByFootId(Long footId);
 }

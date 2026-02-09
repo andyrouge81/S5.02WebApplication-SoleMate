@@ -19,22 +19,20 @@ public class JwtService {
 
     private final String secret;
     private final long expirationMs;
-
+    /*
     public JwtService() {
         this.secret = "w/UsYSHmyMyg+cm6Fjedqxq02Oo7M/GkfFLXYDJYMHU=";
         this.expirationMs = 1000 * 60 *60 * 12;
-    }
+    }*/
 
 
-    /*
     public JwtService(
-            @Value("${app.jwt.secret}") String secret,
-            @Value("${app.jwt.expiration-ms}") long expirationMs) {
+            @Value("${jwt.secret}") String secret,
+            @Value("${jwt.expiration-ms}") long expirationMs) {
         this.secret = secret;
         this.expirationMs = expirationMs;
     }
 
-     */
 
 
 
