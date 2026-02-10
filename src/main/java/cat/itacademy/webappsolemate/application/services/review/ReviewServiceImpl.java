@@ -1,6 +1,7 @@
 package cat.itacademy.webappsolemate.application.services.review;
 
 import cat.itacademy.webappsolemate.application.dto.request.ReviewRequest;
+import cat.itacademy.webappsolemate.application.dto.request.UpdateReviewRequest;
 import cat.itacademy.webappsolemate.application.dto.response.CurrentUserResponse;
 import cat.itacademy.webappsolemate.application.dto.response.ReviewResponse;
 import cat.itacademy.webappsolemate.application.mappers.ReviewMapper;
@@ -86,6 +87,29 @@ public class ReviewServiceImpl implements ReviewService {
                 .toList();
 
     }
+
+    @Override
+    public ReviewResponse updateReview(Long reviewId, UpdateReviewRequest request) {
+
+        CurrentUserResponse currentUser = authService.getCurrentUser();
+
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(()-> new ReviewNotFoundException(reviewId));
+
+        boolean isOwner = review.getReviewer().getId().equals(currentUser.id());
+        boolean isAdmin = currentUser.role() == Role.ROLE_ADMIN;
+
+        if(!isOwner && !isAdmin) {
+            throw new AccessDeniedException("No authorized to update this review");
+        }
+
+        review.setComment(request.comment().trim());
+        review.setRateAspect(request.rateAspect());
+
+        Review saved = reviewRepository.save(review);
+        return ReviewMapper.toResponse(saved);
+    }
+
 
     @Override
     public void deleteReview(Long reviewId) {

@@ -1,6 +1,7 @@
 package cat.itacademy.webappsolemate.controllers;
 
 import cat.itacademy.webappsolemate.application.dto.request.ReviewRequest;
+import cat.itacademy.webappsolemate.application.dto.request.UpdateReviewRequest;
 import cat.itacademy.webappsolemate.application.dto.response.ReviewResponse;
 import cat.itacademy.webappsolemate.application.services.review.ReviewService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -37,6 +38,15 @@ public class ReviewController {
     List<ReviewResponse> getReviewsByFoot(@PathVariable Long footId) {
 
         return reviewService.getReviewsByFoot(footId);
+    }
+
+    @PutMapping("/reviews/{reviewId}")
+    @PreAuthorize("hasRole('ADMIN') or @reviewSecurity.isOwner(#reviewId)")
+    public ReviewResponse updateReview(
+            @PathVariable Long reviewId,
+            @Valid @RequestBody UpdateReviewRequest request
+            ) {
+        return reviewService.updateReview(reviewId, request);
     }
 
     @DeleteMapping("/reviews/{reviewId}")
