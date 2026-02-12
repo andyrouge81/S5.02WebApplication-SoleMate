@@ -3,9 +3,9 @@ package cat.itacademy.webappsolemate.controllers;
 import cat.itacademy.webappsolemate.application.dto.request.ReviewRequest;
 import cat.itacademy.webappsolemate.application.dto.response.ReviewResponse;
 import cat.itacademy.webappsolemate.application.services.review.ReviewService;
-import cat.itacademy.webappsolemate.infraestructure.security.CustomUserDetailsService;
+
 import cat.itacademy.webappsolemate.infraestructure.security.JwtAuthenticationFilter;
-import cat.itacademy.webappsolemate.infraestructure.security.JwtService;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.net.URI;
 import java.time.LocalDateTime;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -26,7 +25,6 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-
 
 @WebMvcTest(ReviewController.class)
 @AutoConfigureMockMvc(addFilters = false)

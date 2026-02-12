@@ -1,4 +1,4 @@
-package cat.itacademy.webappsolemate.application.services.foot;
+package cat.itacademy.webappsolemate.application.services;
 
 
 import cat.itacademy.webappsolemate.application.dto.request.ReviewRequest;

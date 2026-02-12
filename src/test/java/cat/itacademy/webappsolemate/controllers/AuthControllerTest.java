@@ -1,8 +1,7 @@
 package cat.itacademy.webappsolemate.controllers;
 
-
-
 import cat.itacademy.webappsolemate.application.dto.request.LoginRequest;
+import cat.itacademy.webappsolemate.application.dto.request.RegisterRequest;
 import cat.itacademy.webappsolemate.application.services.auth.AuthService;
 import cat.itacademy.webappsolemate.infraestructure.security.JwtAuthenticationFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -49,4 +49,37 @@ class AuthControllerTest {
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.message").value("Invalid credentials"));
     }
+
+    @Test
+    void register_withValidRequest_returns201() throws Exception {
+        RegisterRequest request = new RegisterRequest(
+                "newuser",
+                "newuser@mail.com",
+                "pass123"
+        );
+
+        doNothing().when(authService).register(request);
+
+        mockMvc.perform(post("/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isCreated());
+    }
+
+    @Test
+    void register_withInvalidRequest_returns400() throws Exception {
+
+        RegisterRequest invalidRequest = new RegisterRequest(
+                "ab",
+                "bad-email",
+                "123"
+        );
+
+        mockMvc.perform(post("/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(invalidRequest)))
+                .andExpect(status().isBadRequest());
+    }
+
+
 }

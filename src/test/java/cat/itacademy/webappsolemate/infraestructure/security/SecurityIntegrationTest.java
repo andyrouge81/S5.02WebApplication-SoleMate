@@ -73,7 +73,7 @@ class SecurityIntegrationTest {
 
     @Test
     void adminHealth_withUserToken_returns403() throws Exception {
-        mockMvc.perform(get("/auth/admin/health")
+        mockMvc.perform(get("/admin/users")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + userToken()))
                 .andExpect(status().isForbidden());
     }
@@ -129,4 +129,3 @@ class SecurityIntegrationTest {
         );
     }
 }
-

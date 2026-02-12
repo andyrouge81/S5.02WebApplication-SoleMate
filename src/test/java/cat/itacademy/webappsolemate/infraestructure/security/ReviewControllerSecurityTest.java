@@ -22,8 +22,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -51,6 +50,9 @@ public class ReviewControllerSecurityTest {
 
     @MockBean
     private ReviewService reviewService;
+
+    @MockBean(name = "reviewSecurity")
+    private ReviewSecurity reviewSecurity;
 
 
     @MockBean
@@ -113,8 +115,30 @@ public class ReviewControllerSecurityTest {
 
         mockMvc.perform(delete("/feet/reviews/{reviewId}", reviewId))
                 .andExpect(status().isNoContent());
+    }
 
+    @Test
+    @WithMockUser(username = "owner", roles = "USER")
+    void deleteReview_whenOwner_shouldDeleteReview204() throws Exception {
+        Long reviewId = 10L;
 
+        when(reviewSecurity.isOwner(reviewId)).thenReturn(true);
+        doNothing().when(reviewService).deleteReview(reviewId);
 
+        mockMvc.perform(delete("/feet/reviews/{reviewId}", reviewId))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    @WithMockUser(username = "otherUser", roles = "USER")
+    void deleteReview_whenUserIsNotOwner_thenForbidden403() throws Exception {
+        Long reviewId = 11L;
+
+        when(reviewSecurity.isOwner(reviewId)).thenReturn(false);
+
+        mockMvc.perform(delete("/feet/reviews/{reviewId}", reviewId))
+                .andExpect(status().isForbidden());
+
+        verify(reviewService, never()).deleteReview(anyLong());
     }
 }

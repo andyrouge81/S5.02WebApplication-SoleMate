@@ -1,6 +1,5 @@
 package cat.itacademy.webappsolemate.infraestructure.security;
 
-import cat.itacademy.webappsolemate.application.services.foot.FootService;
 import cat.itacademy.webappsolemate.domain.entities.Foot;
 import cat.itacademy.webappsolemate.domain.entities.User;
 import cat.itacademy.webappsolemate.infraestructure.persistence.FootRepository;
