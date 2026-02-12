@@ -35,4 +35,7 @@ public class Foot {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
+    @Column(name = "image_hash", nullable = false, length = 64)
+    private String imageHash;
+
 }

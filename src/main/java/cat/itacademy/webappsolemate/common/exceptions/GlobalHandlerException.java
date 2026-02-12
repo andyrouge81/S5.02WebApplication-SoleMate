@@ -97,4 +97,14 @@ public class GlobalHandlerException {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
     }
 
+    @ExceptionHandler(DuplicateFootException.class)
+    public ResponseEntity<ApiError> handlerDuplicatedFoot(DuplicateFootException ex) {
+        ApiError error = new ApiError(
+                HttpStatus.CONFLICT.getReasonPhrase(),
+                ex.getMessage(),
+                Instant.now()
+        );
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+    }
+
 }

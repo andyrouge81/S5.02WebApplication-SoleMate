@@ -8,6 +8,7 @@ import cat.itacademy.webappsolemate.common.exceptions.UserNotFoundException;
 import cat.itacademy.webappsolemate.domain.entities.User;
 import cat.itacademy.webappsolemate.domain.enums.Role;
 import cat.itacademy.webappsolemate.infraestructure.persistence.FootRepository;
+import cat.itacademy.webappsolemate.infraestructure.persistence.FootSwipeRepository;
 import cat.itacademy.webappsolemate.infraestructure.persistence.ReviewRepository;
 import cat.itacademy.webappsolemate.infraestructure.persistence.UserRepository;
 import org.springframework.data.domain.Page;
@@ -27,13 +28,16 @@ public class AdminServiceImpl implements AdminService {
     private final AuthService authService;
     private final FootRepository footRepository;
     private final ReviewRepository reviewRepository;
+    private final FootSwipeRepository footSwipeRepository;
 
     public AdminServiceImpl(UserRepository userRepository, AuthService authService,
-                            FootRepository footRepository, ReviewRepository reviewRepository) {
+                            FootRepository footRepository, ReviewRepository reviewRepository,
+                            FootSwipeRepository footSwipeRepository) {
         this.userRepository = userRepository;
         this.authService = authService;
         this.footRepository = footRepository;
         this.reviewRepository = reviewRepository;
+        this.footSwipeRepository = footSwipeRepository;
     }
 
     @Override
@@ -103,13 +107,13 @@ public class AdminServiceImpl implements AdminService {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "At least one admin must remain");
             }
         }
+        footSwipeRepository.deleteByUser_Id(userId);
+        footSwipeRepository.deleteByFoot_Owner_Id(userId);
 
         reviewRepository.deleteByReviewerId(userId);
-
         reviewRepository.deleteByFoot_Owner_Id(userId);
 
         footRepository.deleteByOwnerId(userId);
-
         userRepository.delete(user);
 
     }

@@ -15,4 +15,9 @@ public interface FootSwipeRepository extends JpaRepository<FootSwipe, Long> {
 
     long countByFoot_IdAndAction(Long footId, SwipeAction action);
 
+    void deleteByUser_Id(Long userId);
+    void deleteByFoot_Owner_Id(Long ownerId);
+
+    void deleteByFoot_Id(Long footId);
+
 }
