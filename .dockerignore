@@ -1,0 +1,29 @@
+# VCS
+.git
+.gitignore
+
+# IDE
+.idea
+.vscode
+*.iml
+
+# OS
+.DS_Store
+
+# Build outputs
+target
+out
+build
+
+# Logs
+*.log
+logs
+
+# Env / local config
+.env
+.env.*
+application-local.yml
+application-dev.yml
+
+# Tests reports
+surefire-reports
