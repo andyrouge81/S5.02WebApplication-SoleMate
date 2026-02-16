@@ -2,7 +2,7 @@ package cat.itacademy.webappsolemate.controllers;
 
 import cat.itacademy.webappsolemate.application.dto.request.FootRequest;
 import cat.itacademy.webappsolemate.application.dto.response.FootResponse;
-import cat.itacademy.webappsolemate.application.services.FootService;
+import cat.itacademy.webappsolemate.application.services.foot.FootService;
 import cat.itacademy.webappsolemate.domain.enums.ArchType;
 import cat.itacademy.webappsolemate.infraestructure.security.JwtAuthenticationFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;

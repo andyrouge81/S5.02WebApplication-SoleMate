@@ -18,8 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
-
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -41,6 +39,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<AdminListResponse> listUsers(String search, Pageable pageable) {
 
         Page<User> page;
@@ -58,6 +57,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    @Transactional
     public AdminListResponse updateUser(Long userId, UpdateAdminRequest request) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
@@ -115,7 +115,6 @@ public class AdminServiceImpl implements AdminService {
 
         footRepository.deleteByOwnerId(userId);
         userRepository.delete(user);
-
     }
 
 }

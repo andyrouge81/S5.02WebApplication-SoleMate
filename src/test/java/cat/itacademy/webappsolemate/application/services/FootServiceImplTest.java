@@ -4,6 +4,7 @@ import cat.itacademy.webappsolemate.application.dto.request.FootRequest;
 import cat.itacademy.webappsolemate.application.dto.response.CurrentUserResponse;
 import cat.itacademy.webappsolemate.application.dto.response.FootResponse;
 import cat.itacademy.webappsolemate.application.services.auth.AuthService;
+import cat.itacademy.webappsolemate.application.services.foot.FootServiceImpl;
 import cat.itacademy.webappsolemate.common.exceptions.DuplicateFootException;
 import cat.itacademy.webappsolemate.common.exceptions.FootNotFoundException;
 import cat.itacademy.webappsolemate.common.exceptions.UserNotFoundException;

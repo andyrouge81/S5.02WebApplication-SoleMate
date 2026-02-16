@@ -2,7 +2,7 @@ package cat.itacademy.webappsolemate.controllers;
 
 import cat.itacademy.webappsolemate.application.dto.request.FootRequest;
 import cat.itacademy.webappsolemate.application.dto.response.FootResponse;
-import cat.itacademy.webappsolemate.application.services.FootService;
+import cat.itacademy.webappsolemate.application.services.foot.FootService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

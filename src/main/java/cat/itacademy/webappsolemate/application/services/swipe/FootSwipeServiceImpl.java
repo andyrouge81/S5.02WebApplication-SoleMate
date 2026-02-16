@@ -61,7 +61,7 @@ public class FootSwipeServiceImpl implements FootSwipeService{
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<SwipeResponse> getMySwipes() {
         CurrentUserResponse currentUser = authService.getCurrentUser();
 
