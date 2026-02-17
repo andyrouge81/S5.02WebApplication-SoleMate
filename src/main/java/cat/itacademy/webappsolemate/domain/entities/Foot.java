@@ -19,9 +19,9 @@ public class Foot {
     private Long id;
 
     @Column(nullable = false, length = 50)
-    private String nickname;
+    private String title;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String imageUrl;
 
     @Enumerated(EnumType.STRING)
@@ -34,5 +34,8 @@ public class Foot {
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
+
+    @Column(name = "image_hash", nullable = false, length = 64)
+    private String imageHash;
 
 }

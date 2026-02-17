@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Entity
 // para no dejar que se ponga mas de un comentario por ususario
 @Table(name = "reviews", uniqueConstraints = @UniqueConstraint(
-        columnNames = {"review_id", "foot_id"}))
+        columnNames = {"reviewer_id", "foot_id"}))
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor

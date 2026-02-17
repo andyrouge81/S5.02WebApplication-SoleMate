@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 public record FootResponse(
 
         Long id,
-        String nickname,
+        String title,
         String imageUrl,
         ArchType archType,
         String ownerUsername,
